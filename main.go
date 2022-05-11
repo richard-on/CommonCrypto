@@ -1,32 +1,40 @@
 package main
 
 import (
+	"CryptoLab1/cipher"
 	"fmt"
 )
 
-func main() {
-	inputEng := "ПРАВАЯ"
-	/*affineEng := Cipher{
-		CryptoSystem: affine,
-		alphabet:     " ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-	}*/
+func EncryptAndDecrypt(c cipher.Cipher, input string) {
+	fmt.Println(input)
 
-	subEng := Cipher{
-		CryptoSystem: simpleSubstitution,
-		alphabet:     " АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ",
-	}
-
-	encrypted, err := subEng.Encrypt(inputEng, " ЯБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮА")
+	encrypted, err := c.Encrypt(input)
 	if err != nil {
-		fmt.Printf("%v\n", err)
-		return
+		panic(err)
 	}
-	decrypted, err := subEng.Decrypt(encrypted, " ЯБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮА")
-	if err != nil {
-		return
-	}
-
-	fmt.Println(inputEng)
 	fmt.Println(encrypted)
+
+	decrypted, err := c.Decrypt(encrypted)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println(decrypted)
+}
+
+func main() {
+	engAlphabet, _ := cipher.NewAlphabet("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ")
+	rusAlphabet := cipher.DefaultAlphabet()
+
+	trEng := cipher.Affine{
+		Alphabet: &engAlphabet,
+		Key:      "fr",
+	}
+	EncryptAndDecrypt(&trEng, "richard here")
+
+	viRus := cipher.Vigenere{
+		Alphabet: &rusAlphabet,
+		Key:      "ЁЖИК",
+	}
+	EncryptAndDecrypt(&viRus, "ВЫШЕЛ ЁЖИК")
+
 }
