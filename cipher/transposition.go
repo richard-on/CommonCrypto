@@ -6,7 +6,7 @@ import (
 )
 
 type Transposition struct {
-	Alphabet
+	*Alphabet
 	Key string
 }
 

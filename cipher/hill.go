@@ -97,6 +97,100 @@ func (h *Hill) Decrypt(input string) (decrypted string, decryptError error) {
 	return outputText.String(), nil
 }
 
+/*func residue(a, m int) float64 {
+	reminder := int(math.Abs(float64(a % m)))
+	if a >= 0 {
+		return float64(reminder)
+	} else if a < 0 && reminder != 0 {
+		return float64(m - reminder)
+	}
+	return 0
+}
+
+func modularInverse(a, m int) (int, error) {
+	if m == 1 {
+		return 0, nil
+	}
+	if _, _, g := egcd(a, m); g != 1 {
+		return -1, fmt.Errorf("%d and %d are not coprimes", a, m)
+	}
+	m0, x, y := m, 1, 0
+	for a > 1 {
+		q := a / m
+		m, a = a%m, m
+		y, x = x-q*y, y
+	}
+	if x < 0 {
+		x += m0
+	}
+	return x, nil
+}
+
+func cofactor(key *mat.Dense) (*mat.Dense, error) {
+	//cof := &Matrix{order: m.order, data: make([][]int, m.order)}
+	for i := 0; i < 2; i++ {
+		row := make([]int, 2)
+		for j := 0; j < 2; j++ {
+			minor, _ := Minor(m, i, j) // Error is neglected since row & col are always in bound
+			detM, err := mat.Det(minor)
+			if err != nil {
+				return nil, fmt.Errorf("failed to compute det(m) for minor at row:%d col:%d\n%s;%v", i, j, m, err)
+			}
+			if (i+j)%2 == 0 {
+				row[j] = detM
+			} else {
+				row[j] = detM * -1
+			}
+		}
+		cof.data[i] = row
+	}
+	return cof, nil
+}
+
+func minor(key *mat.Dense, p, q int) (*mat.Dense, error) {
+	r := mat.NewDense(1, 1, 0)
+	r := &Matrix{order: m.order - 1}
+	r.data = make([][]int, 0, r.order)
+	for row := 0; row < m.order; row++ {
+		tmp := make([]int, 0, r.order)
+		for col := 0; col < m.order; col++ {
+			if row != p && col != q {
+				tmp = append(tmp, m.data[row][col])
+			}
+		}
+		if row != p {
+			r.data = append(r.data, tmp)
+		}
+	}
+	return r, nil
+}
+
+func adJoint(key *mat.Dense) (*mat.Dense, error) {
+	cof, err := key.Cofactor()
+	if err != nil {
+		return nil, fmt.Errorf("failed to compute cofactor matrix for \n%s; %v", m, err)
+	}
+	return cof.Transpose(), nil
+}
+
+func inverseMod(key *mat.Dense) (*mat.Dense, error) {
+	det := mat.Det(key)
+	res := residue(int(det), 2)
+	inverse, _ := modularInverse(int(res), 2)
+	adj, err := adJoint(key)
+	if err != nil {
+		return nil, fmt.Errorf("failed to compute Adj(\n%v\n); %v", key, err)
+	}
+
+	for i := 0; i < 2; i++ {
+		for j := 0; j < 2; j++ {
+			adj.Set(i, j, residue(int(adj.At(i, j)*float64(inverse)), 2))
+		}
+	}
+
+	return adj, nil
+}*/
+
 /*func (h *Hill) operation(Key *mat.Dense, input []rune) (string, error) {
 	var outputText strings.Builder
 
